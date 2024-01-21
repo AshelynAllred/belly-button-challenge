@@ -6,7 +6,7 @@ let apiData;
 
 
 d3.json(url).then(function(data) {
-    //console.log("Sample Data: ", data);
+    console.log("Sample Data: ", data);
 
     apiData = data;
     let names = data.names;
@@ -23,19 +23,21 @@ d3.json(url).then(function(data) {
     optionChanged(0);
 });
 
-//I see no reason to put these into separate functions.
+
+
 function optionChanged(nameIndex) {
     //logging information for debug purposes
     //console.log(`Accessed sample data for subject participant ${apiData.names[nameIndex]}, index ${nameIndex}`);
 
     sampleData = apiData.samples[nameIndex];
-    ids = sampleData.otu_ids;
+    otuIDs = sampleData.otu_ids;
     values = sampleData.sample_values;
     labels = sampleData.otu_labels;
 
+    //Bar graph
     let traceBar = {
         x: values.slice(0,10).reverse(),
-        y: ids.slice(0,10).reverse().map(id => `OTU ${id}`),
+        y: otuIDs.slice(0,10).reverse().map(id => `OTU ${id}`),
         text: labels.slice(0,10).reverse(),
         type: 'bar',
         orientation: 'h'
@@ -48,14 +50,15 @@ function optionChanged(nameIndex) {
 
     Plotly.newPlot('bar', dataBar, layoutBar);
     
+    //Bubble plot
     let traceBubble = {
-        x: ids,
+        x: otuIDs,
         y: values,
         text: labels,
         mode: 'markers',
         marker: {
-            color: ids,
-            size: values
+            color: otuIDs,
+            size: values //.map(val => Math.sqrt(val) * 5)
         }
     }
 
@@ -66,7 +69,17 @@ function optionChanged(nameIndex) {
     };
 
     Plotly.newPlot('bubble', dataBubble, layoutBubble);
-        
+
+    //Metadata box
+    let demoBox = d3.select('#sample-metadata');
+    let demoList = apiData.metadata[nameIndex];
+
+    //
+    console.log(demoList);
+    demoBox.selectAll('p').remove();
+    for(let key in demoList) {
+        demoBox.append('p').text(`${key}: ${demoList[key]}`);
+    }
 
 }
 
