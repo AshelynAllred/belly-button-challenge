@@ -27,7 +27,7 @@ function optionChanged(nameIndex) {
     //logging information for debug purposes
     //console.log(`Accessed sample data for subject participant ${apiData.names[nameIndex]}, index ${nameIndex}`);
 
-    nameVal = apiData.names[nameIndex]
+    nameVal = apiData.names[nameIndex];
     sampleData = apiData.samples[nameIndex];
     otuIDs = sampleData.otu_ids;
     values = sampleData.sample_values;
@@ -78,6 +78,50 @@ function optionChanged(nameIndex) {
     demoBox.selectAll('p').remove();
     for(let key in demoList) {
         demoBox.append('p').text(`${key}: ${demoList[key]}`);
-    }
+    };
+
+    // Grab wash frequency from demoList
+    let washNo = demoList.wfreq;
+
+    //add gauge chart paramaters
+    let dataGauge = [{
+        //pass wash frequency in as the gauge value:
+        value: washNo,
+        title: {text: "Belly Button Washes per Week"},
+        type: "indicator",
+        //shape: 'angular',
+        mode: "gauge+number",
+        gauge: {
+            //parameters for the gauge
+            axis: {
+                //tick range
+                range: [null, 7],
+                //tick interval (setting to 1 so we see all 7 days)
+                dtick: 1,
+            },
+            bar: {
+                //neutral gray, semi-transparent but still visible enough to look intentional
+                color: "#0006", 
+                //making line about 1/3 thickness so that we see the background colors more clearly
+                thickness: 0.33
+            },
+            steps: [
+                //I'd like to find a way to fill these out programatically but this works for now
+                {range: [0, 1], color: '#aa8888'},
+                {range: [1, 2], color: '#999988'},
+                {range: [2, 3], color: '#88aa88'},
+                {range: [3, 4], color: '#77bb88'},
+                {range: [4, 5], color: '#66cc88'},
+                {range: [5, 6], color: '#55dd88'},
+                {range: [6, 7], color: '#44ee88'}
+
+            ]
+        }
+    }];
+
+    //actually plot the gauge
+    //we don't really need a layout so I'm just passing in an empty Object {} where the layout would normally be
+    Plotly.newPlot('gauge', dataGauge, {});
+
 }
 
