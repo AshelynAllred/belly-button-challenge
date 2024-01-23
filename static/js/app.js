@@ -58,7 +58,11 @@ function optionChanged(nameIndex) {
         marker: {
             color: otuIDs,
             size: values, //.map(val => Math.sqrt(val) * 5)
-            colorscale: 'Picnic'
+            colorscale: 'Picnic',
+            line: {
+                width: 1.5,
+                color: "#000a"
+            }
         }
     }
 
