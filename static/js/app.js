@@ -57,7 +57,8 @@ function optionChanged(nameIndex) {
         mode: 'markers',
         marker: {
             color: otuIDs,
-            size: values //.map(val => Math.sqrt(val) * 5)
+            size: values, //.map(val => Math.sqrt(val) * 5)
+            colormap: 'Portland'
         }
     }
 
