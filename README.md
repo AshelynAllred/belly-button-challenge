@@ -1,5 +1,5 @@
-# belly-button-challenge
-Data Analysis, visualization dashboard of belly button biodiversity using D3.js and Plotly.js implementing various charts that dynamically update upon selecting a dropdown option.
+# Belly Button Challenge
+Data Visualization dashboard of belly button biodiversity using D3.js and Plotly.js, implementing various charts that dynamically update upon selecting a dropdown option populated via data returned from an API call.
 
 ## Where to find everything
 The code is available in the `static/js` folder.
