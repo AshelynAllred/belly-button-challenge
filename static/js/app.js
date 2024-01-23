@@ -1,13 +1,13 @@
 
 let url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
-
 // adding this as a global variable so we can grab the data from the .then() and use it elsewhere:
 let apiData;
 
-
+// Initial loading of data from API
 d3.json(url).then(function(data) {
     console.log("Sample Data: ", data);
 
+    
     apiData = data;
     let names = data.names;
 
@@ -23,12 +23,11 @@ d3.json(url).then(function(data) {
     optionChanged(0);
 });
 
-
-
 function optionChanged(nameIndex) {
     //logging information for debug purposes
     //console.log(`Accessed sample data for subject participant ${apiData.names[nameIndex]}, index ${nameIndex}`);
 
+    nameVal = apiData.names[nameIndex]
     sampleData = apiData.samples[nameIndex];
     otuIDs = sampleData.otu_ids;
     values = sampleData.sample_values;
@@ -45,7 +44,7 @@ function optionChanged(nameIndex) {
 
     let dataBar = [traceBar];
     let layoutBar = {
-        title: `Most Common OTUs in ${apiData.names[nameIndex]}'s Belly Button (up to 10)`
+        title: `Most Common OTUs in ${nameVal}'s Belly Button (up to 10)`
     };
 
     Plotly.newPlot('bar', dataBar, layoutBar);
@@ -64,7 +63,7 @@ function optionChanged(nameIndex) {
 
     var dataBubble = [traceBubble];
     var layoutBubble = {
-        title: 'bubble',
+        title: `All OTUs in sample from subject ${nameVal}`,
         showlegend: false
     };
 
@@ -74,12 +73,11 @@ function optionChanged(nameIndex) {
     let demoBox = d3.select('#sample-metadata');
     let demoList = apiData.metadata[nameIndex];
 
-    //
+    //Fill out demographics
     console.log(demoList);
     demoBox.selectAll('p').remove();
     for(let key in demoList) {
         demoBox.append('p').text(`${key}: ${demoList[key]}`);
     }
-
 }
 
